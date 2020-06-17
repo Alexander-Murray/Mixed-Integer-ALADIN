@@ -35,6 +35,8 @@ Opts must be set. Algorithm options are:
 **eig_flip:** 1,0. Whether or not to flip the eigenvalues of the Hessian matrices in the QP step  
 **eig_non0:** 1,0. Whether or not to modify zero and negative eigenvalues (regularization) of the Hessian matrices in the QP step  
 
+The syntax for using MI_ALADIN is shown in the EXAMPLE_MIP.
+
 To cite use:  
 @InProceedings{Murray_2018,  
   author    = {Murray, A. and Faulwasser, T. and Hagenmeyer, V.},  

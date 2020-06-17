@@ -1,5 +1,5 @@
 # Mixed-Integer-ALADIN
-Input problem must be partitioned:
+Input problem must be partitioned:\\
 obj_funs: cell array of CasADi functions
 cons_funs: cell array of CasADi functions
 A_mats: cell array of matrices

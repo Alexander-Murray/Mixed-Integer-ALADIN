@@ -15,11 +15,11 @@ function [Sig,eps,maxiter,rho,mu,rho_factor,mu_factor,rho_max,mu_max] = MI_AL_pa
     else maxiter = 300;
     end
     if isfield(params,'rho')
-        rho = params.rho0;
-    else rho = 0.1*obj(vertcat(x0{:}));
+        rho = params.rho;
+    else rho = full(0.1*obj(vertcat(x0{:})));
     end
     if isfield(params,'mu')
-        mu = params.mu0;
+        mu = params.mu;
     else mu = max(10*rho,10^3);
     end
     if isfield(params,'rho_factor')

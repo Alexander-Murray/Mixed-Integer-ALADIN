@@ -17,11 +17,11 @@ for i = 1:N
     z = SX.sym(strcat('z',num2str(i),'_'),nz(i),1); % local discrete vars
     
     % objective function
-    obj{i} = rand*x.'*x + rand*z.'*z;
+    obj{i} = rand(1,nx(i))*x + rand(1,nz(i))*z;
     obj_funs{i} = Function('f',{[x;z]},{obj{i}});
     
     % local constraints
-    cons{i} = x + i*z - 5*rand;
+    cons{i} = x.'*x + i*z - 5*rand;
     cons_funs{i} = Function('f',{[x;z]},{cons{i}});
     
     % consensus constraint matrices
@@ -40,8 +40,9 @@ end
 b = zeros(NC,1); % RHS of consensus constraints
 lam0 = zeros(NC,1); % initial guess of Lagrange multiplier of consensus constraints
 
-%%
-%Centralized solution
+%% Centralized solution
+
+% Centralized problem formulation
 x_glob =  SX.sym('x',[sum(nxz),1]);
 
 obj_cent_temp = 0;
@@ -62,27 +63,21 @@ discrete_cent = horzcat(discrete{:});
 lbg = [zeros(NC,1);-Inf(length(cons_cent_temp)-NC,1)];
 ubg = [zeros(NC,1);zeros(length(cons_cent_temp)-NC,1)];
 
+% solve with bonmin
 tic
-% opts.verbose_init = 0;
-% opts.bonmin.heuristic_RINS = 'yes';
-% opts.bonmin.fp_pass_infeasible = 'yes';
-% opts.bonmin.heuristic_feasibility_pump = 'yes';
-% opts.bonmin.pump_for_minlp = 'yes';
-% opts.bonmin.print_level = 0;
-% opts.bonmin.bb_log_level = 0;
-% opts.bonmin.fp_log_level = 0;
-% opts.bonmin.lp_log_level = 0;
-% opts.bonmin.milp_log_level = 0;
-% opts.bonmin.nlp_log_level = 0;
-% opts.bonmin.oa_log_level = 0;
-% opts.bonmin.hessian_approximation = 'limited-memory';
-% opts.bonmin.limited_memory_aug_solver = 'extended';
+opts.verbose_init = 0;
+opts.bonmin.print_level = 0;
+opts.bonmin.bb_log_level = 0;
+opts.bonmin.fp_log_level = 0;
+opts.bonmin.lp_log_level = 0;
+opts.bonmin.milp_log_level = 0;
+opts.bonmin.nlp_log_level = 0;
+opts.bonmin.oa_log_level = 0;
 cent_opts.print_time = 0;
 cent_opts.discrete = discrete_cent;
 
 nlp =   struct('x',x_glob,'f',obj_cent(x_glob),'g',cons_cent(x_glob));
-% cas =   nlpsol('solver','bonmin',nlp,opts);
-cas =   qpsol('solver','gurobi',nlp,cent_opts);
+cas =   nlpsol('solver','bonmin',nlp,opts);
 sol =   cas('lbx', vertcat(lb{:}),...
             'ubx', vertcat(ub{:}),...
             'lbg', lbg,...
@@ -94,15 +89,15 @@ cas.stats.return_status
 Cent_sol = full(sol.x);
 
 %% ALADIN solution
-params.rho0 = 5*10^2;
-params.max_iter = 100;
+params.rho = 5*10^2;
+params.maxiter = 100;
+% params.rho_factor = 1.0;
+% params.mu_factor = 1.0;
 opts.QP_solver = 'backslash';
-opts.MIP_solver = 'gurobi';
+opts.MIP_solver = 'bonmin';
 opts.conv_Hess = 1;
 opts.eig_flip = 0;
 opts.eig_non0 = 1;
-params.rho_factor = 1.0;
-params.mu_factor = 1.0;
 opts.NLPsolver_opts.print_time = 0;
 opts.MINLPsolver_opts.print_time = 0;
 opts.NLPsolver_opts.ipopt.print_level = 0;
@@ -111,7 +106,7 @@ opts.NLPsolver_opts.ipopt.limited_memory_aug_solver = 'extended';
 
 [ ALADIN_xopt, logg ] = MI_ALADIN(obj_funs,cons_funs,A_mats,b,x0,lam0,lb,ub,discrete,params,opts);
 
-ALADIN_time = sum(logg.par_time) + sum(logg.seq_time);
+ALADIN_time = sum(max(logg.par_time)) + sum(logg.seq_time);
 
 %% display solution
 plot_length = size(logg.delY,2)+1;

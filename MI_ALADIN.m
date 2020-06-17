@@ -83,7 +83,7 @@ infeas   = 0; % problem feasibility token
 %track algorithm progress
 ObjVal = full(cent_obj_fun(vertcat(x0{:})));
 ConViol = full(A*vertcat(yy{:}) - b); 
-MI_AL_plot(0,ObjVal,ConViol)
+MI_AL_plot(0,ObjVal,ConViol,maxiter)
  
 %setup a log for some key vectors
 log         = struct();
@@ -221,6 +221,7 @@ alpha_1 = 1; alpha_2 = 1; alpha_3 = 1; % default values. Change these with line 
             if discrete{j}(var)==0
                 delta_x{j}(var) = delx(ctr);
                 ctr = ctr + 1;
+            end
         end
         yy{j} = yy{j} + alpha_1*(x_opt{j}-yy{j}) + alpha_2*delta_x{j};  
     end 
@@ -234,9 +235,9 @@ alpha_1 = 1; alpha_2 = 1; alpha_3 = 1; % default values. Change these with line 
     log.ConViol    = [log.ConViol A*vertcat(x_opt{:}) - b];
     
     % plotting
-    ObjVal = cent_obj_fun(log.X(:,i+1)); %cent_obj_fun(log.X(:,i+1)+log.delY(:,i));
-    ConViol = max(abs(A*vertcat(x_opt{:}) - b));
-    MI_AL_plot(i,ObjVal,ConViol)
+    ObjVal = full(cent_obj_fun(log.X(:,i+1))); %cent_obj_fun(log.X(:,i+1)+log.delY(:,i));
+    ConViol = full(max(abs(A*vertcat(x_opt{:}) - b)));
+    MI_AL_plot(i,ObjVal,ConViol,maxiter)
     
     %next iteration
     i = i+1;

@@ -1,4 +1,4 @@
-function MI_AL_plot(i,ObjVal,ConViol)
+function MI_AL_plot(i,ObjVal,ConViol,maxiter)
     figure(1);
     if i == 1
         set(gcf,'position',[10 30 400 300])

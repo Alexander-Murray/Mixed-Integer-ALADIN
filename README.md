@@ -1,4 +1,7 @@
 # Mixed-Integer-ALADIN
+This code uses the open-source tool CasADi:  
+https://web.casadi.org/
+
 Input problem must be partitioned:  
 obj_funs: cell array of CasADi functions  
 cons_funs: cell array of CasADi functions  

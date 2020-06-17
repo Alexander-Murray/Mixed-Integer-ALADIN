@@ -44,19 +44,4 @@ To cite use:
   volume    = {51},  
   number    = {28},  
   pages     = {350--355},  
-  groups    = {proceedings (peer-reviewed)},  
-  owner     = {Timm},  
-  timestamp = {2017.07.09},  
   }  
-  
-or
-
-@InProceedings{Murray_2018c,  
-  author    = {Murray, A. and Engelmann, A. and Hagenmeyer, V. and Faulwasser, T.},  
-  title     = {Hierarchical Distributed Mixed-Integer Optimization for Reactive Power Dispatch},  
-  booktitle = {10th Symposium on Control of Power and Energy Systems (CPES 2018)},  
-  year      = {2018},  
-  volume    = {51},  
-  number    = {28},  
-  pages     = {368--373},  
-}  

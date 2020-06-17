@@ -16,11 +16,11 @@ Params will assume default values if left empty. Possible params to set:
 Sig: cell array of matrices. Used to scale variables. Default: identity matrix  
 eps: termination tolerance. Default: 10^-3  
 maxiter: iteration limit. Default: 300  
-rho: algorithm parameter analogous to step size. Default: 0.1*obj(x0).  
-mu: algorithm parameter. Default: max(10^3,10*rho)  
+rho: algorithm parameter analogous to step size. Default: 0.1obj(x0).  
+mu: algorithm parameter. Default: max(10^3,10rho)  
 rho_factor: factor by which rho changes each iteration. Default: 1.1  
 mu_factor: factor by which mu changes each iteration. Default: 1.2  
-rho_max: maximum value of rho. Default: 5*10^4  
+rho_max: maximum value of rho. Default: 5 10^4  
 mu_max: maximum value of mu. Default: 10^8  
 
 Opts must be set. Algorithm options are:  

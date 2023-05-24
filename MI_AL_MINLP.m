@@ -8,6 +8,7 @@ function [x_opt,kappa_opt,status] = MI_AL_MINLP(minlp,nlp,x_opt,pNum,lbx,ubx,dis
     status = minlp.stats.return_status;
     
     if strcmp(MINLP_solver,'ipopt')
+        x_opt     = full(sol.x);
         kappa_opt = full(sol.lam_g);
     else
         %re-solve with fixed integer vars to obtain kappas

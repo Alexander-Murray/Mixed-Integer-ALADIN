@@ -1,6 +1,6 @@
 function [ xopt, log , tot_time ] = MI_ALADIN( obj_funs,cons_funs,A_mats,b,x0,lam0,lbx,ubx,discrete,params,opts)
 
-good_statuses = {'Solve_Succeeded','integer optimal, tolerance','OPTIMAL','SUCCESS','integer optimal solution', 'Solved_To_Acceptable_Level','Maximum_Iterations_Exceeded'};                                
+good_statuses = {'Solve_Succeeded','integer optimal, tolerance','OPTIMAL','SUCCESS','integer optimal solution', 'Solved_To_Acceptable_Level'};                                
 
 % get dimensions
 NsubSys = length(obj_funs); %number of partitions
@@ -118,7 +118,6 @@ while i <= maxiter
                warning('rho_max may be set too low or rho_update too high.') 
             end
             infeas = 1;
-            keyboard
             warning(  '%s, Iteration: %i, Partition: %i',minlp{j}.stats.return_status,i,j)
             break
         end
